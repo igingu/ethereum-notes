@@ -208,12 +208,15 @@ Calldata is an encoded chunk of hexadecimal numbers that contains information ab
 
 Calldata for totalBalance() = 0x18160DDD = keccak256("totalSupply()"), truncated to the first leading four bytes
 
+## Free memory pointer
+---
 000 PUSH1 80 // (0x80)
 
 002 PUSH1 40 // (0x40)
 
 004 MSTORE // Make free memory pointer be 0x80. memory[0x40] = 0x80 ()
 
+## Check calldata to have >= 4 bytes, since we don't have receive or fallback functions
 005 PUSH1 04 // (0x04)
 
 007 CALLDATASIZE // (0x04, 0x04)
@@ -224,26 +227,36 @@ Calldata for totalBalance() = 0x18160DDD = keccak256("totalSupply()"), truncated
 
 012 JUMPI // Doesn't jump. ()
 
+## Extract first four bytes of calldata
+---
 013 PUSH4 ffffffff // (0xFFFFFFFF)
 
 018 PUSH29 0100000000000000000000000000000000000000000000000000000000 // (0xFFFFFFFF, 0x0100000000000000000000000000000000000000000000000000000000)
 
 048 PUSH1 00 // (0xFFFFFFFF, 0x0100000000000000000000000000000000000000000000000000000000, 0x00)
 
-050 CALLDATALOAD // ((0xFFFFFFFF, 0x0100000000000000000000000000000000000000000000000000000000, msg.data[0x00:0x20] == 0x18160DDD)
+050 CALLDATALOAD // ((0xFFFFFFFF, 0x000000000100000000000000000000000000000000000000000000000000000000, msg.data[0x00:0x20] == 0x18160DDD)
+051 DIV // Dividing 0x18160DDD000..0000 by 0x000000000100000000000000000000000000000000000000000000000000000000 would give us the first four bytes. (0xFFFFFFFF,0x18160DDD)
+052 AND // (0x18160DDD)
 
-051 DIV - LINE 3
-052 AND - LINE 3
-053 PUSH4 18160ddd - LINE 3
-058 DUP2 - LINE 3
-059 EQ - LINE 3
-060 PUSH2 005b - LINE 3
-063 JUMPI - LINE 3
+## Try to match "totalSupply()"
+---
+053 PUSH4 18160ddd // (0x18160DDD, 0x18160DDD)
+058 DUP2 // (0x18160DDD, 0x18160DDD, 0x18160DDD)
+059 EQ - LINE 3 // (0x18160DDD, 1)
+060 PUSH2 005b // (0x18160DDD, 1, 0x005B)
+063 JUMPI // Jumps at 0x005B which is 91. (0x18160DDD)
+
+## Try to match "balanceOf(address)"
+---
 064 DUP1 -
 065 PUSH4 70a08231 -
 070 EQ -
 071 PUSH2 0082 -
 074 JUMPI -
+
+## Try to match "transfer(address, uint256)"
+---
 075 DUP1 -
 076 PUSH4 a9059cbb -
 081 EQ -
@@ -251,8 +264,13 @@ Calldata for totalBalance() = 0x18160DDD = keccak256("totalSupply()"), truncated
 085 JUMPI -
 086 JUMPDEST -
 087 PUSH1 00 -
+
+## No match (and no fallback function), revert
+--
 089 DUP1 -
 090 REVERT -
+
+
 091 JUMPDEST -
 092 CALLVALUE -
 093 DUP1 -
