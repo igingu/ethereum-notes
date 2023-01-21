@@ -609,4 +609,53 @@ First compute which place in memory is balance[msg.sender] stored, using positio
 451 SSTORE // storage[0x36306db541fd1551fd93a60031e8a8c89d69ddef41d6249f5fdc265dbc8fffa2] = 0x2706. balances[msg.sender] = 9990. (0xa9059CBB, 0x00e1 = 225, 0x690aD8fABE17f1EeFF88E2Ef900f7b88e6eC0aF0, calldata[0x24:0x24+32] = 0x0A = 10, 0x00, 0x01, 0x40)
 
 To be continued
+# [Metadata hash](https://docs.soliditylang.org/en/v0.4.25/metadata.html#encoding-of-the-metadata-hash-in-the-bytecode)
+
+Is located at the end of the bytecode, before the constructor arguments. This is invalid opcode, but translated into bytes, it creates an identifying hash of the contract.
+
+492 LOG1
+493 PUSH6 627a7a723058
+500 SHA3
+501 INVALID
+502 INVALID
+503 SWAP10
+504 DELEGATECALL
+505 GASLIMIT
+506 SWAP7
+507 TIMESTAMP
+508 DUP8
+509 INVALID
+510 INVALID
+511 INVALID
+512 SWAP4
+513 LOG4
+514 SWAP1
+515 JUMPI
+516 INVALID
+517 CALLVALUE
+518 INVALID
+519 BLOCKHASH
+520 INVALID
+521 SWAP2
+522 INVALID
+523 INVALID
+524 INVALID
+525 INVALID
+526 CALLCODE
+527 SWAP13
+528 DUP9
+529 INVALID
+530 INVALID
+531 RETURN
+532 INVALID
+533 STOP
+534 INVALID
+
+is actually 
+
+a165627a7a723058202c27c1ef4be478b21f663f0d0ecdd1c73638730ffebbff1e3c7a234db7df6fd10029
+
+The compiler is hashing the contract’s metadata (which includes information about the contract such as its source code, how it was compiled, etc.) and injecting this hash into the contract’s own bytecode!
+
+
 
