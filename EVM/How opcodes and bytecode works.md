@@ -59,6 +59,8 @@ results in the opcodes under **opcodes.txt**
   * GT - Pop b. Pop a. Push (a > b ? 1 : 0)
   * CALLDATALOAD - Pop idx. Push msg.data[idx:idx+32]
   * AND - Pop a. Pop b. Push a && b (binary).
+* 5 gas
+  * MOD - Pop a. Pob b. Push a % b.
 * 10 gas
   * JUMPI - Pop destination. Pop condition. Jump to destination if condition is true.
 * [A3 gas](https://github.com/wolflo/evm-opcodes/blob/main/gas.md#a7-sstore)
