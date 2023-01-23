@@ -1,0 +1,19 @@
+{
+  "name": "faucet",
+  "version": "1.0.0",
+  "description": "Faucet from mastering ethereum book.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ionut-Viorel Gingu",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ethereumjs-wallet": "^1.0.1",
+    "truffle-wallet-provider": "0.0.5"
+  }
+}

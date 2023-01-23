@@ -1,0 +1,1 @@
+parity --chain=kovan --geth --db-path="D:\ProgramData\Parity\Ethereum\chains"

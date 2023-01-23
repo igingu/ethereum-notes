@@ -1,0 +1,1 @@
+parity --chain=ropsten --geth --db-path="D:\ProgramData\Parity\Ethereum\chains"

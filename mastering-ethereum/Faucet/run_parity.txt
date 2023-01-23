@@ -1,0 +1,5 @@
+parity --chain=ropsten --geth
+curl -X POST localhost:8545 -H "Content-type:application/json" -d "{\"jsonrpc\":\"2.0\",\"method\":\"web3_clientVersion\", \"params\": [], \"id\": 4213}"
+curl -X POST localhost:8545 -H "Content-type:application/json" -d "{\"jsonrpc\":\"2.0\",\"method\":\"eth_gasPrice\", \"params\": [], \"id\": 4213}"
+truffle init
+truffle compile
