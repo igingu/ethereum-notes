@@ -59,6 +59,7 @@ results in the opcodes under **opcodes.txt**
   * GT - Pop b. Pop a. Push (a > b ? 1 : 0)
   * CALLDATALOAD - Pop idx. Push msg.data[idx:idx+32]
   * AND - Pop a. Pop b. Push a && b (binary).
+  * SHR - Pop shift. Pop val. Push val >> shift.
 * 5 gas
   * MOD - Pop a. Pob b. Push a % b.
 * 10 gas
